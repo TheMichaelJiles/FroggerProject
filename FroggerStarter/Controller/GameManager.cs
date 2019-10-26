@@ -212,8 +212,8 @@ namespace FroggerStarter.Controller
 
         private Rectangle createGameObjectBoundingBox(GameObject gameObject)
         {
-            return new Rectangle((int) gameObject.X, (int) gameObject.Y, (int) gameObject.Width,
-                (int) gameObject.Height);
+            return new Rectangle((int)gameObject.X, (int)gameObject.Y, (int)gameObject.Width,
+                (int)gameObject.Height);
         }
 
         /// <summary>

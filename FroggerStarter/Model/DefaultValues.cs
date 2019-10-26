@@ -1,4 +1,7 @@
-﻿namespace FroggerStarter.Model
+﻿using System.Collections.Generic;
+using FroggerStarter.Model.Vehicles;
+
+namespace FroggerStarter.Model
 {
     /// <summary>
     ///     Class containing several default values used during the construction
@@ -10,7 +13,7 @@
 
         public const int LaneOneSpeed = 1;
         public const int LaneOneNumberOfVehicles = 2;
-        public const VehicleType LaneOneVehicleType = VehicleType.Car;
+        public const Vehicle LaneOneVehicles = VehicleFactory.createNewVehicle(VehicleType.Car, Direction.Left);
         public const Direction LaneOneDirection = Direction.Left;
         public const int LaneOneYCoord = 305;
 

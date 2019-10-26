@@ -4,7 +4,7 @@
 
 namespace FroggerStarter.View.Sprites
 {
-    public sealed partial class FrogSprite 
+    public sealed partial class FrogSprite
     {
         #region Constructors
 

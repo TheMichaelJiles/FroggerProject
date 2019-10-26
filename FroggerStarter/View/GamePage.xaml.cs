@@ -16,8 +16,8 @@ namespace FroggerStarter.View
     {
         #region Data members
 
-        private readonly double applicationHeight = (double) Application.Current.Resources["AppHeight"];
-        private readonly double applicationWidth = (double) Application.Current.Resources["AppWidth"];
+        private readonly double applicationHeight = (double)Application.Current.Resources["AppHeight"];
+        private readonly double applicationWidth = (double)Application.Current.Resources["AppWidth"];
         private readonly GameManager gameManager;
 
 
@@ -30,7 +30,7 @@ namespace FroggerStarter.View
             this.InitializeComponent();
 
             ApplicationView.PreferredLaunchViewSize = new Size
-                {Width = this.applicationWidth, Height = this.applicationHeight};
+            { Width = this.applicationWidth, Height = this.applicationHeight };
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             ApplicationView.GetForCurrentView()
                            .SetPreferredMinSize(new Size(this.applicationWidth, this.applicationHeight));

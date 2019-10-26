@@ -6,7 +6,7 @@ namespace FroggerStarter.Model
 {
     /// <summary>Contains information for the orientation and type of a vehicle.</summary>
     /// <seealso cref="FroggerStarter.Model.GameObject" />
-    public class Vehicle : GameObject
+    public abstract class Vehicle : GameObject
     {
         #region Data members
 
@@ -20,11 +20,9 @@ namespace FroggerStarter.Model
         /// Precondition: None
         /// Postcondition: None
         /// <param name="direction">The direction.</param>
-        /// <param name="vehicleType">Type of the vehicle.</param>
-        public Vehicle(Direction direction, VehicleType vehicleType)
+        protected Vehicle(Direction direction)
         {
             this.direction = direction;
-            this.setVehicleSprite(vehicleType);
             this.reflectSpriteIfFacingLeft();
         }
 
@@ -37,20 +35,7 @@ namespace FroggerStarter.Model
             if (this.direction == Direction.Left)
             {
                 Sprite.RenderTransformOrigin = new Point(0.5, 0.5);
-                Sprite.RenderTransform = new ScaleTransform {ScaleX = -1};
-            }
-        }
-
-        private void setVehicleSprite(VehicleType vehicleType)
-        {
-            switch (vehicleType)
-            {
-                case VehicleType.Car:
-                    Sprite = new CarSprite();
-                    break;
-                case VehicleType.Truck:
-                    Sprite = new Truck();
-                    break;
+                Sprite.RenderTransform = new ScaleTransform { ScaleX = -1 };
             }
         }
 
