@@ -13,15 +13,19 @@ namespace FroggerStarter.Model
         #region Data members
 
         public static DefaultLane[] DefaultLanes = {
-            new DefaultLane(1, 2, Direction.Left, VehicleType.Car, 305),
-            new DefaultLane(2, 3, Direction.Right, VehicleType.Truck, 255),
-            new DefaultLane(3, 3, Direction.Left, VehicleType.Car, 205),
-            new DefaultLane(4, 2, Direction.Left, VehicleType.Truck, 155),
-            new DefaultLane(5, 3, Direction.Left, VehicleType.Car, 105),
+            new DefaultLane(1, 2, Direction.Left, VehicleType.Car, BottomOfRoad - LaneHeight),
+            new DefaultLane(2, 3, Direction.Right, VehicleType.Truck, BottomOfRoad - (LaneHeight * 2)),
+            new DefaultLane(3, 3, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 3)),
+            new DefaultLane(4, 2, Direction.Left, VehicleType.Truck, BottomOfRoad - (LaneHeight * 4)),
+            new DefaultLane(5, 3, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 5)),
         };
 
         public const int LaneWidth = 650;
         public const int LaneHeight = 50;
+
+        private const int FrogStartingAreaHeight = 55;
+        private const int CanvasHeight = 410;
+        private const int BottomOfRoad = CanvasHeight - FrogStartingAreaHeight;
 
         public const int MaxScore = 3;
         public const int StartingLives = 4;

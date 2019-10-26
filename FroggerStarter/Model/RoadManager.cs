@@ -51,16 +51,16 @@ namespace FroggerStarter.Model
         private void populateLaneManagersList()
         {
             this.laneManagers = new LaneManager[5];
-            this.laneManagers[0] = new LaneManager(DefaultValues.DefaultLanes[0].vehicleType, DefaultValues.DefaultLanes[0].direction,
-                DefaultValues.DefaultLanes[0].numberOfVehicles, DefaultValues.DefaultLanes[0].YCoordinate, DefaultValues.DefaultLanes[0].Speed);
-            this.laneManagers[1] = new LaneManager(DefaultValues.DefaultLanes[1].vehicleType, DefaultValues.DefaultLanes[1].direction,
-                DefaultValues.DefaultLanes[1].numberOfVehicles, DefaultValues.DefaultLanes[1].YCoordinate, DefaultValues.DefaultLanes[1].Speed);
-            this.laneManagers[2] = new LaneManager(DefaultValues.DefaultLanes[2].vehicleType, DefaultValues.DefaultLanes[2].direction,
-                DefaultValues.DefaultLanes[2].numberOfVehicles, DefaultValues.DefaultLanes[2].YCoordinate, DefaultValues.DefaultLanes[2].Speed);
-            this.laneManagers[3] = new LaneManager(DefaultValues.DefaultLanes[3].vehicleType, DefaultValues.DefaultLanes[3].direction,
-                DefaultValues.DefaultLanes[3].numberOfVehicles, DefaultValues.DefaultLanes[3].YCoordinate, DefaultValues.DefaultLanes[3].Speed);
-            this.laneManagers[4] = new LaneManager(DefaultValues.DefaultLanes[4].vehicleType, DefaultValues.DefaultLanes[4].direction,
-                DefaultValues.DefaultLanes[4].numberOfVehicles, DefaultValues.DefaultLanes[4].YCoordinate, DefaultValues.DefaultLanes[4].Speed);
+            this.laneManagers[0] = new LaneManager(DefaultValues.DefaultLanes[0].VehicleType, DefaultValues.DefaultLanes[0].Direction,
+                DefaultValues.DefaultLanes[0].NumberOfVehicles, DefaultValues.DefaultLanes[0].YCoordinate, DefaultValues.DefaultLanes[0].Speed);
+            this.laneManagers[1] = new LaneManager(DefaultValues.DefaultLanes[1].VehicleType, DefaultValues.DefaultLanes[1].Direction,
+                DefaultValues.DefaultLanes[1].NumberOfVehicles, DefaultValues.DefaultLanes[1].YCoordinate, DefaultValues.DefaultLanes[1].Speed);
+            this.laneManagers[2] = new LaneManager(DefaultValues.DefaultLanes[2].VehicleType, DefaultValues.DefaultLanes[2].Direction,
+                DefaultValues.DefaultLanes[2].NumberOfVehicles, DefaultValues.DefaultLanes[2].YCoordinate, DefaultValues.DefaultLanes[2].Speed);
+            this.laneManagers[3] = new LaneManager(DefaultValues.DefaultLanes[3].VehicleType, DefaultValues.DefaultLanes[3].Direction,
+                DefaultValues.DefaultLanes[3].NumberOfVehicles, DefaultValues.DefaultLanes[3].YCoordinate, DefaultValues.DefaultLanes[3].Speed);
+            this.laneManagers[4] = new LaneManager(DefaultValues.DefaultLanes[4].VehicleType, DefaultValues.DefaultLanes[4].Direction,
+                DefaultValues.DefaultLanes[4].NumberOfVehicles, DefaultValues.DefaultLanes[4].YCoordinate, DefaultValues.DefaultLanes[4].Speed);
         }
 
         /// <summary>Returns all vehicles in all lanes.</summary>

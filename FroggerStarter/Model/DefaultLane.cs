@@ -9,20 +9,20 @@ namespace FroggerStarter.Model
 {
     public class DefaultLane
     {
-        public int Speed { get; private set; }
-        public int numberOfVehicles { get; private set; }
-        public Direction direction { get; private set; }
-        public VehicleType vehicleType { get; private set; }
-        public int YCoordinate { get; private set; }
+        public int Speed { get; }
+        public int NumberOfVehicles { get; }
+        public Direction Direction { get; }
+        public VehicleType VehicleType { get; }
+        public int YCoordinate { get; }
 
 
         public DefaultLane(int speed, int numberOfVehicles, Direction direction, VehicleType vehicleType,
             int yCoordinate)
         {
             this.Speed = speed;
-            this.vehicleType = vehicleType;
-            this.numberOfVehicles = numberOfVehicles;
-            this.direction = direction;
+            this.VehicleType = vehicleType;
+            this.NumberOfVehicles = numberOfVehicles;
+            this.Direction = direction;
             this.YCoordinate = yCoordinate;
         }
 
