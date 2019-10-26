@@ -1,4 +1,4 @@
-﻿namespace FroggerStarter.Model
+﻿namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>
     ///     The enum containing Left or Right, indicating the

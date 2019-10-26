@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq.Expressions;
 using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
@@ -11,35 +12,13 @@ namespace FroggerStarter.Model
     {
         #region Data members
 
-        public const int LaneOneSpeed = 1;
-        public const int LaneOneNumberOfVehicles = 2;
-        public const Vehicle LaneOneVehicles = VehicleFactory.createNewVehicle(VehicleType.Car, Direction.Left);
-        public const Direction LaneOneDirection = Direction.Left;
-        public const int LaneOneYCoord = 305;
-
-        public const int LaneTwoSpeed = 2;
-        public const int LaneTwoNumberOfVehicles = 3;
-        public const VehicleType LaneTwoVehicleType = VehicleType.Truck;
-        public const Direction LaneTwoDirection = Direction.Right;
-        public const int LaneTwoYCoord = 255;
-
-        public const int LaneThreeSpeed = 3;
-        public const int LaneThreeNumberOfVehicles = 3;
-        public const VehicleType LaneThreeVehicleType = VehicleType.Car;
-        public const Direction LaneThreeDirection = Direction.Left;
-        public const int LaneThreeYCoord = 205;
-
-        public const int LaneFourSpeed = 4;
-        public const int LaneFourNumberOfVehicles = 2;
-        public const VehicleType LaneFourVehicleType = VehicleType.Truck;
-        public const Direction LaneFourDirection = Direction.Left;
-        public const int LaneFourYCoord = 155;
-
-        public const int LaneFiveSpeed = 5;
-        public const int LaneFiveNumberOfVehicles = 3;
-        public const VehicleType LaneFiveVehicleType = VehicleType.Car;
-        public const Direction LaneFiveDirection = Direction.Left;
-        public const int LaneFiveYCoord = 105;
+        public static DefaultLane[] DefaultLanes = {
+            new DefaultLane(1, 2, Direction.Left, VehicleType.Car, 305),
+            new DefaultLane(2, 3, Direction.Right, VehicleType.Truck, 255),
+            new DefaultLane(3, 3, Direction.Left, VehicleType.Car, 205),
+            new DefaultLane(4, 2, Direction.Left, VehicleType.Truck, 155),
+            new DefaultLane(5, 3, Direction.Left, VehicleType.Car, 105),
+        };
 
         public const int LaneWidth = 650;
         public const int LaneHeight = 50;

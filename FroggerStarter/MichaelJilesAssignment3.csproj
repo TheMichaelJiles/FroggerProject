@@ -120,7 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Vehicles\Car.cs" />
-    <Compile Include="Model\DefaultLanes.cs" />
+    <Compile Include="Model\DefaultLane.cs" />
     <Compile Include="Model\DefaultValues.cs" />
     <Compile Include="Model\Vehicles\Direction.cs" />
     <Compile Include="Model\Frog.cs" />

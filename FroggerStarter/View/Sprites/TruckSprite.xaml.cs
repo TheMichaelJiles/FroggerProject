@@ -8,9 +8,9 @@ namespace FroggerStarter.View.Sprites
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Truck
+    public sealed partial class TruckSprite
     {
-        public Truck()
+        public TruckSprite()
         {
             this.InitializeComponent();
         }

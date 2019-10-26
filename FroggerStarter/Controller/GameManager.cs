@@ -163,7 +163,7 @@ namespace FroggerStarter.Controller
 
         private bool playerSuccessfullyCrossesRoad()
         {
-            return this.player.Y < DefaultValues.LaneFiveYCoord;
+            return this.player.Y < DefaultValues.DefaultLanes[4].YCoordinate;
         }
 
         private void detectGameOver()

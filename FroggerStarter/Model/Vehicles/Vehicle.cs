@@ -1,8 +1,9 @@
 ﻿using Windows.Foundation;
 using Windows.UI.Xaml.Media;
+using FroggerStarter.Model.Vehicles;
 using FroggerStarter.View.Sprites;
 
-namespace FroggerStarter.Model
+namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>Contains information for the orientation and type of a vehicle.</summary>
     /// <seealso cref="FroggerStarter.Model.GameObject" />
@@ -23,14 +24,13 @@ namespace FroggerStarter.Model
         protected Vehicle(Direction direction)
         {
             this.direction = direction;
-            this.reflectSpriteIfFacingLeft();
         }
 
         #endregion
 
         #region Methods
 
-        private void reflectSpriteIfFacingLeft()
+        protected void reflectSpriteIfFacingLeft()
         {
             if (this.direction == Direction.Left)
             {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
 {
@@ -23,16 +24,12 @@ namespace FroggerStarter.Model
         /// <param name="numberOfVehicles">The number of vehicles in the lane.</param>
         /// <param name="laneYCoordinate">The lane y coordinate.</param>
         /// <param name="speed">The speed of the vehicles in the lane.</param>
-        public LaneManager(Direction direction, int numberOfVehicles, int laneYCoordinate,
+        public LaneManager(VehicleType vehicleType, Direction direction, int numberOfVehicles, int laneYCoordinate,
             int speed)
         {
-            this.createAndPopulateListOfVehicles(direction, numberOfVehicles);
+            this.createAndPopulateListOfVehicles(direction, numberOfVehicles, vehicleType);
             this.assignVehicleCoordinates(numberOfVehicles, laneYCoordinate);
             this.SetSpeedOfVehicles(speed);
-        }
-
-        public LaneManager()
-        {
         }
 
         #endregion
@@ -53,12 +50,12 @@ namespace FroggerStarter.Model
             }
         }
 
-        private void createAndPopulateListOfVehicles(Direction direction, int numberOfVehicles)
+        private void createAndPopulateListOfVehicles(Direction direction, int numberOfVehicles, VehicleType vehicleType)
         {
             this.vehicles = new List<Vehicle>();
             for (var i = 0; i < numberOfVehicles; i++)
             {
-                this.vehicles.Add(new Vehicle(direction));
+                this.vehicles.Add(VehicleFactory.createNewVehicle(vehicleType, direction));
             }
         }
 
