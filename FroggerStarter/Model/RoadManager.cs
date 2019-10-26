@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
+using System.Linq;
 using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
@@ -66,14 +67,13 @@ namespace FroggerStarter.Model
         /// Precondition: None
         /// Postcondition: None
         /// <returns>A list of all vehicles on the canvas.</returns>
-        public IEnumerable<Vehicle> GetAllVehicles()
+        public List<Vehicle> GetAllVehicles()
         {
             var vehicles = new List<Vehicle>();
             foreach (var lane in this.laneManagers)
             {
                 vehicles.AddRange(lane);
             }
-
             return vehicles;
         }
 
@@ -87,10 +87,7 @@ namespace FroggerStarter.Model
 
         private void speedUpVehicles(object sender, object e)
         {
-            foreach (var vehicle in this.GetAllVehicles())
-            {
-                vehicle.SpeedUp();
-            }
+            this.GetAllVehicles().ForEach(vehicle => vehicle.SpeedUp());
         }
 
         /// <summary>Calls each vehicles move method.</summary>

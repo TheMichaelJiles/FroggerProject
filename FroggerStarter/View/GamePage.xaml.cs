@@ -1,4 +1,5 @@
-﻿using Windows.System;
+﻿using System;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -48,17 +49,17 @@ namespace FroggerStarter.View
 
         #region Methods
 
-        private void handleScoreIncreased(int score)
+        private void handleScoreIncreased(object sender, GameManager.ScoreIncreasedEventArgs args)
         {
-            this.scoreLabel.Text = $"Score: {score}";
+            this.scoreLabel.Text = $"Score: {args.Score}";
         }
 
-        private void handleLifeLost(int lives)
+        private void handleLifeLost(object sender, GameManager.LifeLostEventArgs args)
         {
-            this.livesLabel.Text = $"Lives: {lives}";
+            this.livesLabel.Text = $"Lives: {args.Lives}";
         }
 
-        private void handleGameOver()
+        private void handleGameOver(object sender, EventArgs args)
         {
             this.gameOverLabel.Visibility = Visibility.Visible;
         }

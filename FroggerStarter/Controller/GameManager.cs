@@ -14,16 +14,6 @@ namespace FroggerStarter.Controller
     {
         #region Types and Delegates
 
-        /// <summary>Delegate to handle collisions</summary>
-        /// <param name="lives">The current number of lives.</param>
-        public delegate void CollisionHandler(int lives);
-
-        /// <summary>Delegate to handle when the game is over.</summary>
-        public delegate void GameOverHandler();
-
-        /// <summary>Delegate to handle score increase.</summary>
-        /// <param name="score">The current score.</param>
-        public delegate void ScoreHandler(int score);
 
         #endregion
 
@@ -80,14 +70,24 @@ namespace FroggerStarter.Controller
 
         #region Methods
 
+        public class LifeLostEventArgs : EventArgs
+        {
+            public int Lives { get; set; }
+        }
+
+        public class ScoreIncreasedEventArgs : EventArgs
+        {
+            public int Score { get; set; }
+        }
+
         /// <summary>Occurs when a life is lost.</summary>
-        public event CollisionHandler LifeLost;
+        public event EventHandler<LifeLostEventArgs> LifeLost;
 
         /// <summary>Occurs when score increases</summary>
-        public event ScoreHandler ScoreIncreased;
+        public event EventHandler<ScoreIncreasedEventArgs> ScoreIncreased;
 
         /// <summary>Occurs when the game is over.</summary>
-        public event GameOverHandler GameOver;
+        public event EventHandler<EventArgs> GameOver;
 
         private void setupGameTimer()
         {
@@ -155,7 +155,8 @@ namespace FroggerStarter.Controller
             if (this.playerSuccessfullyCrossesRoad())
             {
                 this.playerStats.IncreaseScore();
-                this.ScoreIncreased?.Invoke(this.playerStats.Score);
+                var scoreIncreasedArgs = new ScoreIncreasedEventArgs() {Score = this.playerStats.Score};
+                this.ScoreIncreased?.Invoke(this, scoreIncreasedArgs);
                 this.detectGameOver();
                 this.setPlayerToCenterOfBottomLane();
             }
@@ -173,7 +174,8 @@ namespace FroggerStarter.Controller
                 this.timer.Stop();
                 this.roadManager.StopTimer();
                 this.player.Freeze();
-                this.GameOver?.Invoke();
+                var gameOverArgs = new EventArgs();
+                this.GameOver?.Invoke(this, gameOverArgs);
             }
         }
 
@@ -197,7 +199,8 @@ namespace FroggerStarter.Controller
                 if (this.playerCollidesWithVehicle(playerBoundingBox, vehicleBoundingBox))
                 {
                     this.playerStats.DecreaseLivesByOne();
-                    this.LifeLost?.Invoke(this.playerStats.Lives);
+                    var lifeArgs = new LifeLostEventArgs() {Lives = this.playerStats.Lives};
+                    this.LifeLost?.Invoke(this, lifeArgs);
                     this.detectGameOver();
                     this.setPlayerToCenterOfBottomLane();
                     this.roadManager.ResetVehicleSpeeds();
