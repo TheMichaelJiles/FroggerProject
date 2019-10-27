@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FroggerStarter.Model;
@@ -27,7 +28,7 @@ namespace FroggerStarter.Controller
         private readonly double backgroundHeight;
         private readonly double backgroundWidth;
         private Canvas gameCanvas;
-        private Frog player;
+        private Player player;
         private DispatcherTimer timer;
         private readonly RoadManager roadManager;
         private readonly PlayerStats playerStats;
@@ -152,7 +153,7 @@ namespace FroggerStarter.Controller
 
         private void detectSuccessfulScore()
         {
-            if (this.playerSuccessfullyCrossesRoad())
+            if (this.playerSuccessfullyCrossedRoad())
             {
                 this.playerStats.IncreaseScore();
                 var scoreIncreasedArgs = new ScoreIncreasedEventArgs() {Score = this.playerStats.Score};
@@ -162,7 +163,7 @@ namespace FroggerStarter.Controller
             }
         }
 
-        private bool playerSuccessfullyCrossesRoad()
+        private bool playerSuccessfullyCrossedRoad()
         {
             return this.player.Y < DefaultValues.DefaultLanes[4].YCoordinate;
         }
@@ -192,19 +193,14 @@ namespace FroggerStarter.Controller
         private void detectCollisionOfPlayerAndVehicle()
         {
             var playerBoundingBox = this.createGameObjectBoundingBox(this.player);
-            foreach (var vehicle in this.roadManager.GetAllVehicles())
+            foreach (var vehicleBoundingBox in this.roadManager.GetAllVehicles().Select(this.createGameObjectBoundingBox).Where(vehicleBoundingBox => this.playerCollidesWithVehicle(playerBoundingBox, vehicleBoundingBox)))
             {
-                var vehicleBoundingBox =
-                    this.createGameObjectBoundingBox(vehicle);
-                if (this.playerCollidesWithVehicle(playerBoundingBox, vehicleBoundingBox))
-                {
-                    this.playerStats.DecreaseLivesByOne();
-                    var lifeArgs = new LifeLostEventArgs() {Lives = this.playerStats.Lives};
-                    this.LifeLost?.Invoke(this, lifeArgs);
-                    this.detectGameOver();
-                    this.setPlayerToCenterOfBottomLane();
-                    this.roadManager.ResetVehicleSpeeds();
-                }
+                this.playerStats.DecreaseLivesByOne();
+                var lifeArgs = new LifeLostEventArgs() {Lives = this.playerStats.Lives};
+                this.LifeLost?.Invoke(this, lifeArgs);
+                this.detectGameOver();
+                this.setPlayerToCenterOfBottomLane();
+                this.roadManager.ResetVehicleSpeeds();
             }
         }
 

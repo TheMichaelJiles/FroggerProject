@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Vehicles\Car.cs" />
     <Compile Include="Model\DefaultLane.cs" />
     <Compile Include="Model\DefaultValues.cs" />
@@ -142,6 +143,15 @@
     </Compile>
     <Compile Include="View\Sprites\CarSprite.xaml.cs">
       <DependentUpon>CarSprite.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\FrogDeathOne.xaml.cs">
+      <DependentUpon>FrogDeathOne.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\FrogDeathThree.xaml.cs">
+      <DependentUpon>FrogDeathThree.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\FrogDeathTwo.xaml.cs">
+      <DependentUpon>FrogDeathTwo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\FrogSprite.xaml.cs">
       <DependentUpon>FrogSprite.xaml</DependentUpon>
@@ -180,6 +190,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\CarSprite.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\FrogDeathOne.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\FrogDeathThree.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\FrogDeathTwo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
