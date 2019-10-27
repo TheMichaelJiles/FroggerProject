@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FroggerStarter.Model;
+using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Controller
 {
@@ -30,6 +33,7 @@ namespace FroggerStarter.Controller
         private Canvas gameCanvas;
         private Player player;
         private DispatcherTimer timer;
+        private DispatcherTimer deathTimer;
         private readonly RoadManager roadManager;
         private readonly PlayerStats playerStats;
 
@@ -118,16 +122,23 @@ namespace FroggerStarter.Controller
             var vehicles = this.roadManager.GetAllVehicles();
             foreach (var vehicle in vehicles)
             {
-                this.gameCanvas.Children.Add(vehicle.Sprite);
+                this.addGameObjectToCanvas(vehicle);
             }
         }
 
         private void createAndPlacePlayer()
         {
             this.player = new Frog();
-            this.gameCanvas.Children.Add(this.player.Sprite);
+            this.addGameObjectToCanvas(this.player);
+            this.player.DeathAnimation.ToList().ForEach(this.addGameObjectToCanvas);
+            this.player.DeathAnimation.ToList().ForEach(frame => frame.Sprite.Visibility = Visibility.Collapsed);
             this.setPlayerBoundaries();
             this.setPlayerToCenterOfBottomLane();
+        }
+
+        private void addGameObjectToCanvas(GameObject gameObject)
+        {
+            this.gameCanvas.Children.Add(gameObject.Sprite);
         }
 
         private void setPlayerBoundaries()
@@ -139,6 +150,17 @@ namespace FroggerStarter.Controller
         }
 
         private void setPlayerToCenterOfBottomLane()
+        {
+            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2;
+            this.player.Y = this.backgroundHeight - this.player.Height - BottomLaneOffset;
+            //foreach (var frame in this.player.DeathAnimation)
+            //{
+            //    frame.X = this.backgroundWidth / 2 - frame.Width / 2;
+            //    frame.Y = this.backgroundHeight - frame.Height - BottomLaneOffset;
+            //}
+        }
+
+        private void setJUSTPlayerToCenterOfBottomLane()
         {
             this.player.X = this.backgroundWidth / 2 - this.player.Width / 2;
             this.player.Y = this.backgroundHeight - this.player.Height - BottomLaneOffset;
@@ -198,9 +220,55 @@ namespace FroggerStarter.Controller
                 this.playerStats.DecreaseLivesByOne();
                 var lifeArgs = new LifeLostEventArgs() {Lives = this.playerStats.Lives};
                 this.LifeLost?.Invoke(this, lifeArgs);
+                this.showDeathAnimation();
+            }
+        }
+
+        private void showDeathAnimation()
+        {
+            this.createDeathTimer();
+            this.player.Sprite.Visibility = Visibility.Collapsed;
+            this.setPlayerToCenterOfBottomLane();
+            this.player.Freeze();
+            this.player.DeathAnimation[0].Sprite.Visibility = Visibility.Visible;
+
+            this.deathTimer.Start();
+
+            
+        }
+
+        private void createDeathTimer()
+        {
+            this.deathTimer = new DispatcherTimer();
+            this.deathTimer.Tick += this.deathTimerOnTick;
+            this.deathTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
+        }
+
+        private void deathTimerOnTick(object sender, object args)
+        {
+            
+            var visibleFrameIndex = -1;
+            foreach (var frame in this.player.DeathAnimation)
+            {
+                if (frame.Sprite.Visibility == Visibility.Visible)
+                {
+                    visibleFrameIndex = this.player.DeathAnimation.IndexOf(frame);
+                }
+            }
+
+            this.player.DeathAnimation[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
+
+            if (!(visibleFrameIndex + 1 >= this.player.DeathAnimation.Count))
+            {
+                this.player.DeathAnimation[visibleFrameIndex + 1].Sprite.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.player.DeathAnimation[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
+                this.player.Sprite.Visibility = Visibility.Visible;
+                this.player.Unfreeze();
+                this.deathTimer.Stop();
                 this.detectGameOver();
-                this.setPlayerToCenterOfBottomLane();
-                this.roadManager.ResetVehicleSpeeds();
             }
         }
 
