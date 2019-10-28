@@ -10,7 +10,7 @@
     <Canvas x:Name="canvas" Width="{StaticResource AppWidth}" Height="{StaticResource AppHeight}" Background="Black">
         <ProgressBar Name="progressBar" Canvas.ZIndex="2" Height="10" Width="{StaticResource AppWidth}" Minimum="0" Maximum="20" Value="0" Canvas.Top="401"></ProgressBar>
         <TextBlock Name="livesLabel" Text="Lives: 4" FontSize="25" Foreground="White" Canvas.Left="5" Canvas.Top="5"></TextBlock>
-        <TextBlock Name="scoreLabel" Text="Score: 0" FontSize="25" Foreground="White" Canvas.Left="550" Canvas.Top="5"></TextBlock>
+        <TextBlock Name="scoreLabel" Text="Score: 0" FontSize="25" Foreground="White" Canvas.Left="505" Canvas.Top="5"></TextBlock>
         <TextBlock Text="FROGGER" FontFamily="Arial" FontSize="25" Foreground="Green" Canvas.Left="265" Canvas.Top="5"></TextBlock>
         <TextBlock Canvas.ZIndex="1" Name="gameOverLabel" Text="Game Over" FontFamily="Arial" FontSize="75" Foreground="Red" Canvas.Left="134" Canvas.Top="162"></TextBlock>
         <Rectangle Canvas.Top="55" Fill="Gray" Width="{StaticResource AppWidth}" Height="50" />

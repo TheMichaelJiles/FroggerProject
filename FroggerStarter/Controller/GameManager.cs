@@ -218,8 +218,8 @@ namespace FroggerStarter.Controller
             if (this.playerSuccessfullyCrossedRoad())
             {
                 this.detectCollisionBetweenFrogAndHome();
-                this.playerStats.IncreaseScore();
-                var scoreIncreasedArgs = new ScoreIncreasedEventArgs {Score = (DefaultValues.ScoringTimerMaximum - this.currentProgressBarCount) * 10};
+                this.playerStats.IncreaseScore((DefaultValues.ScoringTimerMaximum - this.currentProgressBarCount) * 10);
+                var scoreIncreasedArgs = new ScoreIncreasedEventArgs {Score = this.playerStats.Score};
                 this.currentProgressBarCount = 0;
                 this.ScoreIncreased?.Invoke(this, scoreIncreasedArgs);
                 this.detectGameOver();

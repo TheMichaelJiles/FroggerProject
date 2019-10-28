@@ -29,9 +29,9 @@
         /// <summary>Increments the score by one.</summary>
         /// Precondition: None
         /// Postcondition: Score = Score@prev + 1
-        public void IncreaseScore()
+        public void IncreaseScore(int score)
         {
-            this.Score++;
+            this.Score += score;
         }
 
         #endregion
