@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FroggerStarter.Model;
-using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Controller
 {
@@ -16,11 +14,6 @@ namespace FroggerStarter.Controller
     /// </summary>
     public class GameManager
     {
-        #region Types and Delegates
-
-
-        #endregion
-
         #region Data members
 
         private const int BottomLaneOffset = 5;
@@ -36,6 +29,7 @@ namespace FroggerStarter.Controller
         private DispatcherTimer deathTimer;
         private readonly RoadManager roadManager;
         private readonly PlayerStats playerStats;
+        private IList<FrogHome> availableHomes;
 
         #endregion
 
@@ -75,16 +69,6 @@ namespace FroggerStarter.Controller
 
         #region Methods
 
-        public class LifeLostEventArgs : EventArgs
-        {
-            public int Lives { get; set; }
-        }
-
-        public class ScoreIncreasedEventArgs : EventArgs
-        {
-            public int Score { get; set; }
-        }
-
         /// <summary>Occurs when a life is lost.</summary>
         public event EventHandler<LifeLostEventArgs> LifeLost;
 
@@ -115,6 +99,43 @@ namespace FroggerStarter.Controller
             this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.createAndPlacePlayer();
             this.placeAllVehicles();
+
+            this.availableHomes = new List<FrogHome>() {
+                new FrogHome(),
+                new FrogHome(),
+                new FrogHome(),
+                new FrogHome(),
+                new FrogHome()
+            };
+
+            var homeWidth = this.availableHomes[0].Width;
+            var totalHomesWidthWithSpaces = (this.availableHomes.Count * homeWidth * 2) - homeWidth;
+            var canvasWidth = this.gameCanvas.Width;
+            var currentXCoordinate = (canvasWidth - totalHomesWidthWithSpaces) / 2;
+
+            foreach (var home in this.availableHomes)
+            {
+                this.gameCanvas.Children.Add(home.Sprite);
+                home.X = currentXCoordinate;
+                home.Y = DefaultValues.DefaultLanes[4].YCoordinate - home.Height;
+                currentXCoordinate += (homeWidth * 2);
+            }
+
+        }
+
+        private void detectCollisionBetweenFrogAndHome()
+        {
+            var playerBoundingBox = this.createGameObjectBoundingBox(this.player);
+            foreach (var home in this.availableHomes)
+            {
+                var homeBoundingBox = this.createGameObjectBoundingBox(home);
+                if (playerBoundingBox.IntersectsWith(homeBoundingBox))
+                {
+                    home.ShowSprite();
+                    this.availableHomes.Remove(home);
+                    break;
+                }
+            }
         }
 
         private void placeAllVehicles()
@@ -153,23 +174,12 @@ namespace FroggerStarter.Controller
         {
             this.player.X = this.backgroundWidth / 2 - this.player.Width / 2;
             this.player.Y = this.backgroundHeight - this.player.Height - BottomLaneOffset;
-            //foreach (var frame in this.player.DeathAnimation)
-            //{
-            //    frame.X = this.backgroundWidth / 2 - frame.Width / 2;
-            //    frame.Y = this.backgroundHeight - frame.Height - BottomLaneOffset;
-            //}
-        }
-
-        private void setJUSTPlayerToCenterOfBottomLane()
-        {
-            this.player.X = this.backgroundWidth / 2 - this.player.Width / 2;
-            this.player.Y = this.backgroundHeight - this.player.Height - BottomLaneOffset;
         }
 
         private void timerOnTick(object sender, object e)
         {
             this.roadManager.MoveAllVehicles();
-            this.detectCollisionOfPlayerAndVehicle();
+           this.detectCollisionOfPlayerAndVehicle();
             this.detectSuccessfulScore();
         }
 
@@ -177,8 +187,9 @@ namespace FroggerStarter.Controller
         {
             if (this.playerSuccessfullyCrossedRoad())
             {
+                this.detectCollisionBetweenFrogAndHome();
                 this.playerStats.IncreaseScore();
-                var scoreIncreasedArgs = new ScoreIncreasedEventArgs() {Score = this.playerStats.Score};
+                var scoreIncreasedArgs = new ScoreIncreasedEventArgs {Score = this.playerStats.Score};
                 this.ScoreIncreased?.Invoke(this, scoreIncreasedArgs);
                 this.detectGameOver();
                 this.setPlayerToCenterOfBottomLane();
@@ -215,10 +226,14 @@ namespace FroggerStarter.Controller
         private void detectCollisionOfPlayerAndVehicle()
         {
             var playerBoundingBox = this.createGameObjectBoundingBox(this.player);
-            foreach (var vehicleBoundingBox in this.roadManager.GetAllVehicles().Select(this.createGameObjectBoundingBox).Where(vehicleBoundingBox => this.playerCollidesWithVehicle(playerBoundingBox, vehicleBoundingBox)))
+            foreach (var vehicleBoundingBox in this.roadManager.GetAllVehicles()
+                                                   .Select(this.createGameObjectBoundingBox)
+                                                   .Where(vehicleBoundingBox =>
+                                                       this.playerCollidesWithVehicle(playerBoundingBox,
+                                                           vehicleBoundingBox)))
             {
                 this.playerStats.DecreaseLivesByOne();
-                var lifeArgs = new LifeLostEventArgs() {Lives = this.playerStats.Lives};
+                var lifeArgs = new LifeLostEventArgs {Lives = this.playerStats.Lives};
                 this.LifeLost?.Invoke(this, lifeArgs);
                 this.showDeathAnimation();
             }
@@ -233,8 +248,6 @@ namespace FroggerStarter.Controller
             this.player.DeathAnimation[0].Sprite.Visibility = Visibility.Visible;
 
             this.deathTimer.Start();
-
-            
         }
 
         private void createDeathTimer()
@@ -246,16 +259,7 @@ namespace FroggerStarter.Controller
 
         private void deathTimerOnTick(object sender, object args)
         {
-            
-            var visibleFrameIndex = -1;
-            foreach (var frame in this.player.DeathAnimation)
-            {
-                if (frame.Sprite.Visibility == Visibility.Visible)
-                {
-                    visibleFrameIndex = this.player.DeathAnimation.IndexOf(frame);
-                }
-            }
-
+            var visibleFrameIndex = this.getVisibleFrameIndexInPlayerDeathAnimations();
             this.player.DeathAnimation[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
 
             if (!(visibleFrameIndex + 1 >= this.player.DeathAnimation.Count))
@@ -272,6 +276,19 @@ namespace FroggerStarter.Controller
             }
         }
 
+        private int getVisibleFrameIndexInPlayerDeathAnimations()
+        {
+            foreach (var frame in this.player.DeathAnimation)
+            {
+                if (frame.Sprite.Visibility == Visibility.Visible)
+                {
+                    return this.player.DeathAnimation.IndexOf(frame);
+                }
+            }
+
+            return -1;
+        }
+
         private bool playerCollidesWithVehicle(Rectangle playerBoundingBox, Rectangle vehicleBoundingBox)
         {
             return playerBoundingBox.IntersectsWith(vehicleBoundingBox);
@@ -279,8 +296,8 @@ namespace FroggerStarter.Controller
 
         private Rectangle createGameObjectBoundingBox(GameObject gameObject)
         {
-            return new Rectangle((int)gameObject.X, (int)gameObject.Y, (int)gameObject.Width,
-                (int)gameObject.Height);
+            return new Rectangle((int) gameObject.X, (int) gameObject.Y, (int) gameObject.Width,
+                (int) gameObject.Height);
         }
 
         /// <summary>
@@ -333,6 +350,24 @@ namespace FroggerStarter.Controller
             {
                 this.player.MoveDown();
             }
+        }
+
+        public class LifeLostEventArgs : EventArgs
+        {
+            #region Properties
+
+            public int Lives { get; set; }
+
+            #endregion
+        }
+
+        public class ScoreIncreasedEventArgs : EventArgs
+        {
+            #region Properties
+
+            public int Score { get; set; }
+
+            #endregion
         }
 
         #endregion

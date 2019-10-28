@@ -54,7 +54,7 @@ namespace FroggerStarter.Model
         public override void MoveRight()
         {
             this.moveX(this.SpeedX);
-            if (!this.isFrozen)
+            if (!this.IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation(); 
             }
@@ -68,7 +68,7 @@ namespace FroggerStarter.Model
         public override void MoveLeft()
         {
             this.moveX(-this.SpeedX);
-            if (!this.isFrozen)
+            if (!this.IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation();
             }
@@ -82,7 +82,7 @@ namespace FroggerStarter.Model
         public override void MoveUp()
         {
             this.moveY(-this.SpeedY);
-            if (!this.isFrozen)
+            if (!this.IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation();
             }
@@ -96,7 +96,7 @@ namespace FroggerStarter.Model
         public override void MoveDown()
         {
             this.moveY(this.SpeedY);
-            if(!this.isFrozen)
+            if(!this.IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation();
             }

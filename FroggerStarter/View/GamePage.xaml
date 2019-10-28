@@ -17,6 +17,11 @@
 
 
         <Rectangle Canvas.Top="355" Fill="Gray" Width="{StaticResource AppWidth}" Height="55" />
+        <Rectangle Name="homeOne" Canvas.Top="55" Canvas.Left="100" Fill="White" Width="50" Height="50" />
+        <Rectangle Name="homeTwo" Canvas.Top="55" Canvas.Left="200" Fill="White" Width="50" Height="50" />
+        <Rectangle Name="homeThree" Canvas.Top="55" Canvas.Left="300" Fill="White" Width="50" Height="50" />
+        <Rectangle Name="homeFour" Canvas.Top="55" Canvas.Left="400" Fill="White" Width="50" Height="50" />
+        <Rectangle Name="homeFive" Canvas.Top="55" Canvas.Left="500" Fill="White" Width="50" Height="50" />
 
     </Canvas>
 </Page>

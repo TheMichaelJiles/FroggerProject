@@ -99,6 +99,7 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <DocumentationFile>bin\x64\Debug\FroggerStarter.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutputPath>bin\x64\Release\</OutputPath>
@@ -120,6 +121,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\FrogDeathAnimation.cs" />
+    <Compile Include="Model\FrogHome.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Vehicles\Car.cs" />
     <Compile Include="Model\DefaultLane.cs" />

@@ -11,7 +11,7 @@ namespace FroggerStarter.Model
     {
         private const int SpeedXDirection = 50;
         private const int SpeedYDirection = 50;
-        protected bool isFrozen = false;
+        protected bool IsFrozen = false;
         public IList<FrogDeathAnimation> DeathAnimation { get; protected set; }
 
         protected Player()
@@ -19,18 +19,21 @@ namespace FroggerStarter.Model
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
 
-        /// <summary>Freezes the player to prevent movement.</summary>
+        /// <summary>Freezes the player to prevent movement and sets IsFrozen to true</summary>
         /// Precondition: None
-        /// Postcondition Sets speed of player to zero
+        /// Postcondition Sets speed of player to zero && IsFrozen == true
         public void Freeze()
         {
-            this.isFrozen = true;
+            this.IsFrozen = true;
             SetSpeed(0, 0);
         }
 
+        /// <summary>Sets player speed back to default and sets IsFrozen to false</summary>
+        /// Precondition: None
+        /// Postcondition Sets speed of player to default && IsFrozen == false
         public void Unfreeze()
         {
-            this.isFrozen = false;
+            this.IsFrozen = false;
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
     }
