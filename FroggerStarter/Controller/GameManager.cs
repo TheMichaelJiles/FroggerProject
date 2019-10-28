@@ -171,7 +171,7 @@ namespace FroggerStarter.Controller
         {
             this.playerXMaximum = this.gameCanvas.Width - this.player.Width;
             this.playerYMaximum = this.gameCanvas.Height - this.player.Height;
-            this.playerYMinimum = this.player.Height;
+            this.playerYMinimum = DefaultValues.DefaultLanes[4].YCoordinate;
             this.playerXMinimum = 0;
         }
 
@@ -199,6 +199,21 @@ namespace FroggerStarter.Controller
                 this.detectGameOver();
                 this.setPlayerToCenterOfBottomLane();
             }
+        }
+
+        private bool playerAtLocationCollidesWithHome(double x, double y)
+        {
+            var playerBoundingBox = new Rectangle((int)x, (int)y, (int)this.player.Width, (int)this.player.Height);
+            foreach (var home in this.availableHomes)
+            {
+                var homeBoundingBox = this.createGameObjectBoundingBox(home);
+                if (playerBoundingBox.IntersectsWith(homeBoundingBox))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void detectCollisionBetweenFrogAndHome()
@@ -231,11 +246,6 @@ namespace FroggerStarter.Controller
                 var gameOverArgs = new EventArgs();
                 this.GameOver?.Invoke(this, gameOverArgs);
             }
-        }
-
-        private bool playerReachesMaxScore()
-        {
-            return this.playerStats.Score == DefaultValues.MaxScore;
         }
 
         private bool playerLivesIsZero()
@@ -353,7 +363,7 @@ namespace FroggerStarter.Controller
         /// </summary>
         public void MovePlayerUp()
         {
-            if (!(this.player.Y - this.player.Height < this.playerYMinimum))
+            if (!(this.player.Y - this.player.Height < this.playerYMinimum) || this.playerAtLocationCollidesWithHome(this.player.X, this.player.Y - this.player.Height))
             {
                 this.player.MoveUp();
             }
