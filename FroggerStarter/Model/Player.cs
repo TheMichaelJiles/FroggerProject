@@ -25,7 +25,6 @@ namespace FroggerStarter.Model
         public void Freeze()
         {
             this.IsFrozen = true;
-            SetSpeed(0, 0);
         }
 
         /// <summary>Sets player speed back to default and sets IsFrozen to false</summary>
@@ -34,7 +33,38 @@ namespace FroggerStarter.Model
         public void Unfreeze()
         {
             this.IsFrozen = false;
-            SetSpeed(SpeedXDirection, SpeedYDirection);
+        }
+
+        public override void MoveUp()
+        {
+            if (!this.IsFrozen)
+            {
+                base.MoveUp();
+            }
+        }
+
+        public override void MoveDown()
+        {
+            if (!this.IsFrozen)
+            {
+                base.MoveDown();
+            }
+        }
+
+        public override void MoveLeft()
+        {
+            if (!this.IsFrozen)
+            {
+                base.MoveLeft();
+            }
+        }
+
+        public override void MoveRight()
+        {
+            if (!this.IsFrozen)
+            {
+                base.MoveRight();
+            }
         }
     }
 }
