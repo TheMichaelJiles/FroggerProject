@@ -20,6 +20,8 @@ namespace FroggerStarter.Model
             new DefaultLane(5, 3, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 5)),
         };
 
+        public const int ScoringTimerMaximum = 20;
+
         public const int LaneWidth = 650;
         public const int LaneHeight = 50;
 

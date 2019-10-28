@@ -5,6 +5,7 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FroggerStarter.Model;
+using FroggerStarter.View;
 
 namespace FroggerStarter.Controller
 {
@@ -16,6 +17,7 @@ namespace FroggerStarter.Controller
     {
         #region Data members
 
+        private int currentProgressBarCount = 0;
         private const int BottomLaneOffset = 5;
         private double playerXMinimum;
         private double playerYMinimum;
@@ -79,7 +81,7 @@ namespace FroggerStarter.Controller
         /// <summary>Occurs when the game is over.</summary>
         public event EventHandler<EventArgs> GameOver;
 
-        public event EventHandler<EventArgs> ProgressBarIncrease;
+        public event EventHandler<ProgressBarArgs> ProgressBarIncrease;
 
         private void setupGameTimer()
         {
@@ -111,9 +113,26 @@ namespace FroggerStarter.Controller
             this.scoringTimer.Start();
         }
 
+        public class ProgressBarArgs
+        {
+            public int ProgressValue { get; set; }
+        }
+
         private void scoringTimerTick(object sender, object args)
         {
-            this.ProgressBarIncrease?.Invoke(this, EventArgs.Empty);
+            this.currentProgressBarCount++;
+            this.ProgressBarIncrease?.Invoke(this, new ProgressBarArgs {ProgressValue = this.currentProgressBarCount});
+            if (this.currentProgressBarCount == DefaultValues.ScoringTimerMaximum)
+            {
+                this.currentProgressBarCount = 0;
+                this.ProgressBarIncrease?.Invoke(this, new ProgressBarArgs { ProgressValue = this.currentProgressBarCount });
+                this.playerStats.DecreaseLivesByOne();
+                var lifeArgs = new LifeLostEventArgs { Lives = this.playerStats.Lives };
+                this.LifeLost?.Invoke(this, lifeArgs);
+                this.showDeathAnimation();
+                this.detectGameOver();
+                this.setPlayerToCenterOfBottomLane();
+            }
         }
 
         private void populateAvailableHomes()
@@ -184,7 +203,7 @@ namespace FroggerStarter.Controller
         private void timerOnTick(object sender, object e)
         {
             this.roadManager.MoveAllVehicles();
-            //this.detectCollisionOfPlayerAndVehicle();
+            this.detectCollisionOfPlayerAndVehicle();
             this.detectSuccessfulScore();
         }
 
@@ -194,7 +213,8 @@ namespace FroggerStarter.Controller
             {
                 this.detectCollisionBetweenFrogAndHome();
                 this.playerStats.IncreaseScore();
-                var scoreIncreasedArgs = new ScoreIncreasedEventArgs {Score = this.playerStats.Score};
+                var scoreIncreasedArgs = new ScoreIncreasedEventArgs {Score = (DefaultValues.ScoringTimerMaximum - this.currentProgressBarCount) * 10};
+                this.currentProgressBarCount = 0;
                 this.ScoreIncreased?.Invoke(this, scoreIncreasedArgs);
                 this.detectGameOver();
                 this.setPlayerToCenterOfBottomLane();
@@ -263,6 +283,7 @@ namespace FroggerStarter.Controller
                                                            vehicleBoundingBox)))
             {
                 this.playerStats.DecreaseLivesByOne();
+                this.currentProgressBarCount = 0;
                 var lifeArgs = new LifeLostEventArgs {Lives = this.playerStats.Lives};
                 this.LifeLost?.Invoke(this, lifeArgs);
                 this.showDeathAnimation();

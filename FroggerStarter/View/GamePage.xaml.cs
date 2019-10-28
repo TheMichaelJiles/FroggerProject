@@ -43,16 +43,17 @@ namespace FroggerStarter.View
             this.gameManager.LifeLost += this.handleLifeLost;
             this.gameManager.ScoreIncreased += this.handleScoreIncreased;
             this.gameManager.GameOver += this.handleGameOver;
-            this.gameManager.ProgressBarIncrease += this.increaseProgressBar;
+            this.gameManager.ProgressBarIncrease += this.updateProgressBar;
         }
 
         #endregion
 
         #region Methods
 
-        private void increaseProgressBar(object sender, object args)
+
+        private void updateProgressBar(object sender, GameManager.ProgressBarArgs args)
         {
-            this.progressBar.Value++;
+            this.progressBar.Value = args.ProgressValue;
         }
 
         private void handleScoreIncreased(object sender, GameManager.ScoreIncreasedEventArgs args)
