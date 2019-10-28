@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using System.Linq;
@@ -78,6 +79,22 @@ namespace FroggerStarter.Model
             return vehicles;
         }
 
+        public List<Vehicle> GetAllActiveVehicles()
+        {
+            var vehicles = new List<Vehicle>();
+            foreach (var lane in this.laneManagers)
+            {
+                foreach (var vehicle in lane)
+                {
+                    if (vehicle.IsActivated)
+                    {
+                        vehicles.Add(vehicle);
+                    }
+                }
+            }
+            return vehicles;
+        }
+
         private void setupSpeedTimer()
         {
             this.timer = new DispatcherTimer();
@@ -106,18 +123,42 @@ namespace FroggerStarter.Model
         /// Postcondition: All vehicles move in their own direction by their own speed.
         public void MoveAllVehicles()
         {
-            foreach (var vehicle in this.GetAllVehicles())
+            foreach (var vehicle in this.GetAllActiveVehicles())
             {
                 vehicle.Move();
                 if (this.vehicleIsOffRightSideOfCanvas(vehicle))
                 {
                     vehicle.X = 0 - vehicle.Width;
+                    this.detectCollisionOfThisAndVehicle(vehicle);
                 }
                 else if (this.vehicleIsOffLeftSideOfCanvas(vehicle))
                 {
                     vehicle.X = DefaultValues.LaneWidth;
+                    this.detectCollisionOfThisAndVehicle(vehicle);
                 }
             }
+        }
+
+        private void detectCollisionOfThisAndVehicle(Vehicle vehicle)
+        {
+            var vehicleBoundingBox = this.createGameObjectBoundingBox(vehicle);
+            var activatedVehicles = this.GetAllActiveVehicles();
+            foreach (var otherVehicle in activatedVehicles)
+            {
+                if (vehicle != otherVehicle) {
+                    var otherVehicleBoundingBox = this.createGameObjectBoundingBox(otherVehicle);
+                    if (vehicleBoundingBox.IntersectsWith(otherVehicleBoundingBox))
+                    {
+                        vehicle.MoveBack();
+                    }
+                }
+            }
+        }
+
+        private Rectangle createGameObjectBoundingBox(GameObject gameObject)
+        {
+            return new Rectangle((int)gameObject.X, (int)gameObject.Y, (int)gameObject.Width,
+                (int)gameObject.Height);
         }
 
         /// <summary>Stops the game timer.</summary>

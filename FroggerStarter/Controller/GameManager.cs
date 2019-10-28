@@ -5,6 +5,7 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using FroggerStarter.Model;
+using FroggerStarter.Model.Vehicles;
 using FroggerStarter.View;
 
 namespace FroggerStarter.Controller
@@ -293,6 +294,8 @@ namespace FroggerStarter.Controller
                 this.showDeathAnimation();
             }
         }
+
+        
 
         private void showDeathAnimation()
         {

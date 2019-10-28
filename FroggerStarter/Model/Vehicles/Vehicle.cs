@@ -59,6 +59,18 @@ namespace FroggerStarter.Model.Vehicles
             }
         }
 
+        public void MoveBack()
+        {
+            if (this.direction == Direction.Right)
+            {
+                this.X -= 80;
+            }
+            else
+            {
+                this.X += 80;
+            }
+        }
+
         /// <summary>Speeds up.</summary>
         /// Precondition: None
         /// Postcondition: Increments the SpeedX by one.
