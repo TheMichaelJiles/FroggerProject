@@ -43,11 +43,11 @@ namespace FroggerStarter.Model
         /// Postcondition: Vehicles speeds are set to default values
         public void ResetVehicleSpeeds()
         {
-            this.laneManagers[0].SetSpeedOfVehicles(DefaultValues.DefaultLanes[0].Speed);
-            this.laneManagers[1].SetSpeedOfVehicles(DefaultValues.DefaultLanes[1].Speed);
-            this.laneManagers[2].SetSpeedOfVehicles(DefaultValues.DefaultLanes[2].Speed);
-            this.laneManagers[3].SetSpeedOfVehicles(DefaultValues.DefaultLanes[3].Speed);
-            this.laneManagers[4].SetSpeedOfVehicles(DefaultValues.DefaultLanes[4].Speed);
+            foreach (var lane in this.laneManagers)
+            {
+                lane.Reset();
+            }
+            this.speedUpVehicles(this, EventArgs.Empty);
         }
 
         private void populateLaneManagersList()
@@ -99,7 +99,7 @@ namespace FroggerStarter.Model
         {
             this.timer = new DispatcherTimer();
             this.timer.Tick += this.speedUpVehicles;
-            this.timer.Interval = new TimeSpan(0, 0, 0, 5, 0);
+            this.timer.Interval = new TimeSpan(0, 0, 0, 8, 0);
             this.timer.Start();
         }
 
@@ -126,6 +126,7 @@ namespace FroggerStarter.Model
             foreach (var vehicle in this.GetAllActiveVehicles())
             {
                 vehicle.Move();
+                this.detectCollisionOfThisAndVehicle(vehicle);
                 if (this.vehicleIsOffRightSideOfCanvas(vehicle))
                 {
                     vehicle.X = 0 - vehicle.Width;
@@ -143,14 +144,13 @@ namespace FroggerStarter.Model
         {
             var vehicleBoundingBox = this.createGameObjectBoundingBox(vehicle);
             var activatedVehicles = this.GetAllActiveVehicles();
-            foreach (var otherVehicle in activatedVehicles)
+            foreach (var otherVehicle in activatedVehicles.Where(otherVehicle => otherVehicle != vehicle))
             {
-                if (vehicle != otherVehicle) {
-                    var otherVehicleBoundingBox = this.createGameObjectBoundingBox(otherVehicle);
-                    if (vehicleBoundingBox.IntersectsWith(otherVehicleBoundingBox))
-                    {
-                        vehicle.MoveBack();
-                    }
+                var otherVehicleBoundingBox = this.createGameObjectBoundingBox(otherVehicle);
+                if (vehicleBoundingBox.IntersectsWith(otherVehicleBoundingBox))
+                {
+                    vehicle.MoveBack();
+                    break;
                 }
             }
         }

@@ -134,6 +134,7 @@ namespace FroggerStarter.Controller
                 this.playerStats.DecreaseLivesByOne();
                 var lifeArgs = new LifeLostEventArgs { Lives = this.playerStats.Lives };
                 this.LifeLost?.Invoke(this, lifeArgs);
+                this.roadManager.ResetVehicleSpeeds();
                 this.showDeathAnimation();
                 this.detectGameOver();
                 this.setPlayerToCenterOfBottomLane();
@@ -291,6 +292,7 @@ namespace FroggerStarter.Controller
                 this.currentProgressBarCount = 0;
                 var lifeArgs = new LifeLostEventArgs {Lives = this.playerStats.Lives};
                 this.LifeLost?.Invoke(this, lifeArgs);
+                this.roadManager.ResetVehicleSpeeds();
                 this.showDeathAnimation();
             }
         }

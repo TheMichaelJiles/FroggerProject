@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using FroggerStarter.Model.Vehicles;
@@ -14,6 +15,8 @@ namespace FroggerStarter.Model
 
         private IList<Vehicle> vehicles;
         private Direction direction;
+        private int numberOfVehicles;
+        private int laneYCoordinate;
 
         #endregion
 
@@ -32,6 +35,8 @@ namespace FroggerStarter.Model
             this.stackVehiclesOffScreen(numberOfVehicles, laneYCoordinate);
             this.SetSpeedOfVehicles(speed);
             this.direction = direction;
+            this.numberOfVehicles = numberOfVehicles;
+            this.laneYCoordinate = laneYCoordinate;
         }
 
         #endregion
@@ -50,6 +55,15 @@ namespace FroggerStarter.Model
             {
                 vehicle.SpeedX = speed;
             }
+        }
+
+        public void Reset()
+        {
+            foreach (var vehicle in this.vehicles)
+            {
+                vehicle.IsActivated = false;
+            }
+            this.stackVehiclesOffScreen(this.numberOfVehicles, this.laneYCoordinate);
         }
 
         private void createAndPopulateListOfVehicles(Direction direction, int numberOfVehicles, VehicleType vehicleType)

@@ -63,11 +63,11 @@ namespace FroggerStarter.Model.Vehicles
         {
             if (this.direction == Direction.Right)
             {
-                this.X -= 80;
+                this.X -= this.Width*2;
             }
             else
             {
-                this.X += 80;
+                this.X += this.Width*2;
             }
         }
 
