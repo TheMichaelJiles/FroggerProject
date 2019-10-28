@@ -27,6 +27,7 @@ namespace FroggerStarter.Controller
         private Player player;
         private DispatcherTimer timer;
         private DispatcherTimer deathTimer;
+        private DispatcherTimer scoringTimer;
         private readonly RoadManager roadManager;
         private readonly PlayerStats playerStats;
         private IList<FrogHome> availableHomes;
@@ -78,6 +79,8 @@ namespace FroggerStarter.Controller
         /// <summary>Occurs when the game is over.</summary>
         public event EventHandler<EventArgs> GameOver;
 
+        public event EventHandler<EventArgs> ProgressBarIncrease;
+
         private void setupGameTimer()
         {
             this.timer = new DispatcherTimer();
@@ -99,7 +102,22 @@ namespace FroggerStarter.Controller
             this.gameCanvas = gamePage ?? throw new ArgumentNullException(nameof(gamePage));
             this.createAndPlacePlayer();
             this.placeAllVehicles();
+            this.populateAvailableHomes();
+            this.placeFrogHomesAtTopOfRoad();
 
+            this.scoringTimer = new DispatcherTimer();
+            this.scoringTimer.Tick += this.scoringTimerTick;
+            this.scoringTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            this.scoringTimer.Start();
+        }
+
+        private void scoringTimerTick(object sender, object args)
+        {
+            this.ProgressBarIncrease?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void populateAvailableHomes()
+        {
             this.availableHomes = new List<FrogHome>() {
                 new FrogHome(),
                 new FrogHome(),
@@ -107,7 +125,10 @@ namespace FroggerStarter.Controller
                 new FrogHome(),
                 new FrogHome()
             };
+        }
 
+        private void placeFrogHomesAtTopOfRoad()
+        {
             var homeWidth = this.availableHomes[0].Width;
             var totalHomesWidthWithSpaces = (this.availableHomes.Count * homeWidth * 2) - homeWidth;
             var canvasWidth = this.gameCanvas.Width;
@@ -119,22 +140,6 @@ namespace FroggerStarter.Controller
                 home.X = currentXCoordinate;
                 home.Y = DefaultValues.DefaultLanes[4].YCoordinate - home.Height;
                 currentXCoordinate += (homeWidth * 2);
-            }
-
-        }
-
-        private void detectCollisionBetweenFrogAndHome()
-        {
-            var playerBoundingBox = this.createGameObjectBoundingBox(this.player);
-            foreach (var home in this.availableHomes)
-            {
-                var homeBoundingBox = this.createGameObjectBoundingBox(home);
-                if (playerBoundingBox.IntersectsWith(homeBoundingBox))
-                {
-                    home.ShowSprite();
-                    this.availableHomes.Remove(home);
-                    break;
-                }
             }
         }
 
@@ -179,7 +184,7 @@ namespace FroggerStarter.Controller
         private void timerOnTick(object sender, object e)
         {
             this.roadManager.MoveAllVehicles();
-           this.detectCollisionOfPlayerAndVehicle();
+            //this.detectCollisionOfPlayerAndVehicle();
             this.detectSuccessfulScore();
         }
 
@@ -196,6 +201,21 @@ namespace FroggerStarter.Controller
             }
         }
 
+        private void detectCollisionBetweenFrogAndHome()
+        {
+            var playerBoundingBox = this.createGameObjectBoundingBox(this.player);
+            foreach (var home in this.availableHomes)
+            {
+                var homeBoundingBox = this.createGameObjectBoundingBox(home);
+                if (playerBoundingBox.IntersectsWith(homeBoundingBox))
+                {
+                    home.ShowSprite();
+                    this.availableHomes.Remove(home);
+                    break;
+                }
+            }
+        }
+
         private bool playerSuccessfullyCrossedRoad()
         {
             return this.player.Y < DefaultValues.DefaultLanes[4].YCoordinate;
@@ -203,7 +223,7 @@ namespace FroggerStarter.Controller
 
         private void detectGameOver()
         {
-            if (this.playerLivesIsZero() || this.playerReachesMaxScore())
+            if (this.playerLivesIsZero() || this.availableHomes.Count == 0)
             {
                 this.timer.Stop();
                 this.roadManager.StopTimer();
