@@ -39,6 +39,7 @@ namespace FroggerStarter.Model
                 new FrogDeathAnimation(new FrogDeathOne()),
                 new FrogDeathAnimation(new FrogDeathTwo()),
                 new FrogDeathAnimation(new FrogDeathThree()),
+                new FrogDeathAnimation(new FrogDeathFour())
             };
         }
 
