@@ -12,6 +12,7 @@ namespace FroggerStarter.Model.Vehicles
         #region Data members
 
         private readonly Direction direction;
+        public bool IsActivated { get; set; }
 
         #endregion
 
@@ -24,6 +25,7 @@ namespace FroggerStarter.Model.Vehicles
         protected Vehicle(Direction direction)
         {
             this.direction = direction;
+            this.IsActivated = false;
         }
 
         #endregion
@@ -44,13 +46,16 @@ namespace FroggerStarter.Model.Vehicles
         /// Postcondition: Vehicle moves its current speed in it's current direction.
         public void Move()
         {
-            if (this.direction == Direction.Right)
+            if (IsActivated)
             {
-                MoveRight();
-            }
-            else
-            {
-                MoveLeft();
+                if (this.direction == Direction.Right)
+                {
+                    MoveRight();
+                }
+                else
+                {
+                    MoveLeft();
+                }
             }
         }
 

@@ -13,6 +13,7 @@ namespace FroggerStarter.Model
         #region Data members
 
         private IList<Vehicle> vehicles;
+        private Direction direction;
 
         #endregion
 
@@ -28,8 +29,9 @@ namespace FroggerStarter.Model
             int speed)
         {
             this.createAndPopulateListOfVehicles(direction, numberOfVehicles, vehicleType);
-            this.assignVehicleCoordinates(numberOfVehicles, laneYCoordinate);
+            this.stackVehiclesOffScreen(numberOfVehicles, laneYCoordinate);
             this.SetSpeedOfVehicles(speed);
+            this.direction = direction;
         }
 
         #endregion
@@ -56,6 +58,22 @@ namespace FroggerStarter.Model
             for (var i = 0; i < numberOfVehicles; i++)
             {
                 this.vehicles.Add(VehicleFactory.createNewVehicle(vehicleType, direction));
+            }
+        }
+
+        private void stackVehiclesOffScreen(int numberOfVehicles, int laneYCoordinate)
+        {
+            foreach (var vehicle in this.vehicles)
+            {
+                vehicle.Y = laneYCoordinate + (DefaultValues.LaneHeight - vehicle.Height) / 2;
+                if (this.direction == Direction.Left)
+                {
+                    vehicle.X = DefaultValues.LaneWidth;
+                }
+                else
+                {
+                    vehicle.X = -vehicle.Width;
+                }
             }
         }
 

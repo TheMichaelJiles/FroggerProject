@@ -30,6 +30,7 @@ namespace FroggerStarter.Model
         {
             this.populateLaneManagersList();
             this.setupSpeedTimer();
+            this.speedUpVehicles(this, EventArgs.Empty);
         }
 
         #endregion
@@ -87,7 +88,17 @@ namespace FroggerStarter.Model
 
         private void speedUpVehicles(object sender, object e)
         {
-            this.GetAllVehicles().ForEach(vehicle => vehicle.SpeedUp());
+            foreach (var lane in this.laneManagers)
+            {
+                foreach (var vehicle in lane)
+                {
+                    if (!vehicle.IsActivated)
+                    {
+                        vehicle.IsActivated = true;
+                        break;
+                    }
+                }
+            }
         }
 
         /// <summary>Calls each vehicles move method.</summary>

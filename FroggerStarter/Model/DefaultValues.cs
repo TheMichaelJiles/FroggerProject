@@ -13,11 +13,11 @@ namespace FroggerStarter.Model
         #region Data members
 
         public static DefaultLane[] DefaultLanes = {
-            new DefaultLane(1, 2, Direction.Left, VehicleType.Car, BottomOfRoad - LaneHeight),
-            new DefaultLane(2, 3, Direction.Right, VehicleType.Truck, BottomOfRoad - (LaneHeight * 2)),
-            new DefaultLane(3, 3, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 3)),
-            new DefaultLane(4, 2, Direction.Left, VehicleType.Truck, BottomOfRoad - (LaneHeight * 4)),
-            new DefaultLane(5, 3, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 5)),
+            new DefaultLane(1, 3, Direction.Left, VehicleType.Car, BottomOfRoad - LaneHeight),
+            new DefaultLane(2, 2, Direction.Right, VehicleType.Truck, BottomOfRoad - (LaneHeight * 2)),
+            new DefaultLane(3, 4, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 3)),
+            new DefaultLane(4, 3, Direction.Left, VehicleType.Truck, BottomOfRoad - (LaneHeight * 4)),
+            new DefaultLane(5, 5, Direction.Left, VehicleType.Car, BottomOfRoad - (LaneHeight * 5)),
         };
 
         public const int ScoringTimerMaximum = 20;
