@@ -31,7 +31,7 @@ namespace FroggerStarter.Model
 
         /// <summary>Initializes a new instance of the <see cref="Player" /> class.</summary>
         /// Precondition: none
-        /// Postcondition: Speed is set to SPeedXDirection and SpeedYDirection
+        /// Postcondition: Speed is set to SPeedXDirection and SpeedYDirection.
         protected Player()
         {
             SetSpeed(SpeedXDirection, SpeedYDirection);
