@@ -1,0 +1,2 @@
+Scoring Mechanism: The score is calculated by subtracting the current value of the progress bar from the Maximum property, 
+                    and then multiplying by 10.
