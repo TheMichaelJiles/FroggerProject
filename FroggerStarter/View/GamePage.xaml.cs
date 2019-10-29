@@ -26,6 +26,7 @@ namespace FroggerStarter.View
 
         #region Constructors
 
+        /// <summary>Initializes a new instance of the <see cref="GamePage"/> class.</summary>
         public GamePage()
         {
             this.InitializeComponent();

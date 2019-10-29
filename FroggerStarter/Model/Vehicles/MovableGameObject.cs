@@ -68,11 +68,19 @@ namespace FroggerStarter.Model.Vehicles
             this.moveY(this.SpeedY);
         }
 
+        /// <summary>  Sets x to x + x</summary>
+        /// <param name="x">The x.</param>
+        /// Precondition: None
+        /// Postcondition: x == x + x
         protected void moveX(int x)
         {
             X += x;
         }
 
+        /// <summary>  Sets y to y+ y</summary>
+        /// <param name="y">The y.</param>
+        /// Precondition: None
+        /// Postcondition: y == y + y
         protected void moveY(int y)
         {
             Y += y;

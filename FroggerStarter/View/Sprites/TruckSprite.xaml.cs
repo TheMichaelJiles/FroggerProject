@@ -10,6 +10,7 @@ namespace FroggerStarter.View.Sprites
     /// </summary>
     public sealed partial class TruckSprite
     {
+        /// <summary>Initializes a new instance of the <see cref="TruckSprite"/> class.</summary>
         public TruckSprite()
         {
             this.InitializeComponent();

@@ -2,9 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Runtime.CompilerServices;
-using Windows.UI.Xaml;
 using System.Linq;
+using Windows.UI.Xaml;
 using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
@@ -38,6 +37,18 @@ namespace FroggerStarter.Model
 
         #region Methods
 
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<Vehicle> GetEnumerator()
+        {
+            return this.laneManagers[0]?.GetEnumerator() ?? throw new InvalidOperationException();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.laneManagers[0]?.GetEnumerator() ?? throw new InvalidOperationException();
+        }
+
         /// <summary>Resets the vehicles to default positions.</summary>
         /// Precondition: None
         /// Postcondition: Vehicles locations are set to default values
@@ -47,22 +58,33 @@ namespace FroggerStarter.Model
             {
                 lane.Reset();
             }
+
             this.placeNewVehicles(this, EventArgs.Empty);
         }
 
         private void populateLaneManagersList()
         {
             this.laneManagers = new LaneManager[5];
-            this.laneManagers[0] = new LaneManager(DefaultValues.DefaultLanes[0].VehicleType, DefaultValues.DefaultLanes[0].Direction,
-                DefaultValues.DefaultLanes[0].NumberOfVehicles, DefaultValues.DefaultLanes[0].YCoordinate, DefaultValues.DefaultLanes[0].Speed);
-            this.laneManagers[1] = new LaneManager(DefaultValues.DefaultLanes[1].VehicleType, DefaultValues.DefaultLanes[1].Direction,
-                DefaultValues.DefaultLanes[1].NumberOfVehicles, DefaultValues.DefaultLanes[1].YCoordinate, DefaultValues.DefaultLanes[1].Speed);
-            this.laneManagers[2] = new LaneManager(DefaultValues.DefaultLanes[2].VehicleType, DefaultValues.DefaultLanes[2].Direction,
-                DefaultValues.DefaultLanes[2].NumberOfVehicles, DefaultValues.DefaultLanes[2].YCoordinate, DefaultValues.DefaultLanes[2].Speed);
-            this.laneManagers[3] = new LaneManager(DefaultValues.DefaultLanes[3].VehicleType, DefaultValues.DefaultLanes[3].Direction,
-                DefaultValues.DefaultLanes[3].NumberOfVehicles, DefaultValues.DefaultLanes[3].YCoordinate, DefaultValues.DefaultLanes[3].Speed);
-            this.laneManagers[4] = new LaneManager(DefaultValues.DefaultLanes[4].VehicleType, DefaultValues.DefaultLanes[4].Direction,
-                DefaultValues.DefaultLanes[4].NumberOfVehicles, DefaultValues.DefaultLanes[4].YCoordinate, DefaultValues.DefaultLanes[4].Speed);
+            this.laneManagers[0] = new LaneManager(DefaultValues.DefaultLanes[0].VehicleType,
+                DefaultValues.DefaultLanes[0].Direction,
+                DefaultValues.DefaultLanes[0].NumberOfVehicles, DefaultValues.DefaultLanes[0].YCoordinate,
+                DefaultValues.DefaultLanes[0].Speed);
+            this.laneManagers[1] = new LaneManager(DefaultValues.DefaultLanes[1].VehicleType,
+                DefaultValues.DefaultLanes[1].Direction,
+                DefaultValues.DefaultLanes[1].NumberOfVehicles, DefaultValues.DefaultLanes[1].YCoordinate,
+                DefaultValues.DefaultLanes[1].Speed);
+            this.laneManagers[2] = new LaneManager(DefaultValues.DefaultLanes[2].VehicleType,
+                DefaultValues.DefaultLanes[2].Direction,
+                DefaultValues.DefaultLanes[2].NumberOfVehicles, DefaultValues.DefaultLanes[2].YCoordinate,
+                DefaultValues.DefaultLanes[2].Speed);
+            this.laneManagers[3] = new LaneManager(DefaultValues.DefaultLanes[3].VehicleType,
+                DefaultValues.DefaultLanes[3].Direction,
+                DefaultValues.DefaultLanes[3].NumberOfVehicles, DefaultValues.DefaultLanes[3].YCoordinate,
+                DefaultValues.DefaultLanes[3].Speed);
+            this.laneManagers[4] = new LaneManager(DefaultValues.DefaultLanes[4].VehicleType,
+                DefaultValues.DefaultLanes[4].Direction,
+                DefaultValues.DefaultLanes[4].NumberOfVehicles, DefaultValues.DefaultLanes[4].YCoordinate,
+                DefaultValues.DefaultLanes[4].Speed);
         }
 
         /// <summary>Returns all vehicles in all lanes.</summary>
@@ -76,6 +98,7 @@ namespace FroggerStarter.Model
             {
                 vehicles.AddRange(lane);
             }
+
             return vehicles;
         }
 
@@ -96,6 +119,7 @@ namespace FroggerStarter.Model
                     }
                 }
             }
+
             return vehicles;
         }
 
@@ -159,8 +183,8 @@ namespace FroggerStarter.Model
 
         private Rectangle createGameObjectBoundingBox(GameObject gameObject)
         {
-            return new Rectangle((int)gameObject.X, (int)gameObject.Y, (int)gameObject.Width,
-                (int)gameObject.Height);
+            return new Rectangle((int) gameObject.X, (int) gameObject.Y, (int) gameObject.Width,
+                (int) gameObject.Height);
         }
 
         /// <summary>Stops the game timer.</summary>
@@ -179,18 +203,6 @@ namespace FroggerStarter.Model
         private bool vehicleIsOffRightSideOfCanvas(GameObject vehicle)
         {
             return vehicle.X >= DefaultValues.LaneWidth;
-        }
-
-        /// <summary>Returns an enumerator that iterates through the collection.</summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<Vehicle> GetEnumerator()
-        {
-            return this.laneManagers[0]?.GetEnumerator() ?? throw new InvalidOperationException();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.laneManagers[0]?.GetEnumerator() ?? throw new InvalidOperationException();
         }
 
         #endregion
