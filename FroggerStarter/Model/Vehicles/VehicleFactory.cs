@@ -1,13 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FroggerStarter.Model.Vehicles
+﻿namespace FroggerStarter.Model.Vehicles
 {
+    /// <summary>Class with one static method that returns an object based ont he VehicleType</summary>
     public class VehicleFactory
     {
+        #region Methods
+
+        /// <summary>Returns a new vehicle object based on the passed in type</summary>
+        /// <param name="type">The type.</param>
+        /// <param name="direction">The direction.</param>
+        /// Precondition: None
+        /// Postcondition: None
+        /// <returns>a new vehicle object based on the passed in type</returns>
         public static Vehicle createNewVehicle(VehicleType type, Direction direction)
         {
             switch (type)
@@ -26,5 +29,7 @@ namespace FroggerStarter.Model.Vehicles
                 }
             }
         }
+
+        #endregion
     }
 }

@@ -6,7 +6,10 @@
     /// </summary>
     public enum Direction
     {
+        /// <summary>Specifies object is facing right</summary>
         Right,
+
+        /// <summary>Specifies object is facing left</summary>
         Left
     }
 }

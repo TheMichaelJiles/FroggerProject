@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FroggerStarter.Model.Vehicles
 {
+    /// <summary></summary>
+    /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class MovableGameObject : GameObject
     {
+        #region Properties
+
         /// <summary>
         ///     Gets the x speed of the game object.
         /// </summary>
@@ -23,6 +23,10 @@ namespace FroggerStarter.Model.Vehicles
         ///     The speed y.
         /// </value>
         public int SpeedY { get; private set; }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Moves the game object right.
@@ -66,12 +70,12 @@ namespace FroggerStarter.Model.Vehicles
 
         protected void moveX(int x)
         {
-            this.X += x;
+            X += x;
         }
 
         protected void moveY(int y)
         {
-            this.Y += y;
+            Y += y;
         }
 
         /// <summary>
@@ -96,5 +100,7 @@ namespace FroggerStarter.Model.Vehicles
             this.SpeedX = speedX;
             this.SpeedY = speedY;
         }
+
+        #endregion
     }
 }
