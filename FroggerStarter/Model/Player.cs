@@ -1,23 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FroggerStarter.View.Sprites;
+﻿using System.Collections.Generic;
+using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
 {
-    public abstract class Player : GameObject
+    public abstract class Player : MovableGameObject
     {
+        #region Data members
+
         private const int SpeedXDirection = 50;
         private const int SpeedYDirection = 50;
-        protected bool IsFrozen = false;
+        protected bool IsFrozen;
+
+        #endregion
+
+        #region Properties
+
         public IList<FrogDeathAnimation> DeathAnimation { get; protected set; }
+
+        #endregion
+
+        #region Constructors
 
         protected Player()
         {
             SetSpeed(SpeedXDirection, SpeedYDirection);
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>Freezes the player to prevent movement and sets IsFrozen to true</summary>
         /// Precondition: None
@@ -66,5 +77,7 @@ namespace FroggerStarter.Model
                 base.MoveRight();
             }
         }
+
+        #endregion
     }
 }

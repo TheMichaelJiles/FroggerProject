@@ -133,6 +133,7 @@
     <Compile Include="Model\LaneManager.cs" />
     <Compile Include="Model\PlayerStats.cs" />
     <Compile Include="Model\RoadManager.cs" />
+    <Compile Include="Model\Vehicles\MovableGameObject.cs" />
     <Compile Include="Model\Vehicles\Truck.cs" />
     <Compile Include="Model\Vehicles\Vehicle.cs" />
     <Compile Include="Model\Vehicles\VehicleFactory.cs" />
@@ -158,6 +159,9 @@
     </Compile>
     <Compile Include="View\Sprites\FrogDeathTwo.xaml.cs">
       <DependentUpon>FrogDeathTwo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sprites\FrogHomeSprite.xaml.cs">
+      <DependentUpon>FrogHomeSprite.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sprites\FrogSprite.xaml.cs">
       <DependentUpon>FrogSprite.xaml</DependentUpon>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Sprites\FrogDeathTwo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Sprites\FrogHomeSprite.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

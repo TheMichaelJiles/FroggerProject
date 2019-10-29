@@ -14,11 +14,10 @@ namespace FroggerStarter.Model
     class FrogHome : GameObject
     {
         public bool IsFilled { get; private set; }
-        private Rect background;
 
         public FrogHome()
         {
-            this.Sprite = new FrogSprite
+            this.Sprite = new FrogHomeSprite
             {
                 Visibility = Visibility.Collapsed
             };
@@ -29,11 +28,6 @@ namespace FroggerStarter.Model
         {
             this.Sprite.Visibility = Visibility.Visible;
             this.IsFilled = true;
-        }
-
-        public void CreateBackground(double x, double y, double width, double height)
-        {
-            
         }
     }
 }

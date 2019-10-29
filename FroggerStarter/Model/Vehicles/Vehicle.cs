@@ -7,7 +7,7 @@ namespace FroggerStarter.Model.Vehicles
 {
     /// <summary>Contains information for the orientation and type of a vehicle.</summary>
     /// <seealso cref="FroggerStarter.Model.GameObject" />
-    public abstract class Vehicle : GameObject
+    public abstract class Vehicle : MovableGameObject
     {
         #region Data members
 

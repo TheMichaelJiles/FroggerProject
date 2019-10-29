@@ -110,7 +110,7 @@ namespace FroggerStarter.Controller
 
             this.scoringTimer = new DispatcherTimer();
             this.scoringTimer.Tick += this.scoringTimerTick;
-            this.scoringTimer.Interval = new TimeSpan(0, 0, 0, 1, 0);
+            this.scoringTimer.Interval = new TimeSpan(0, 0, 0, 0, 80);
             this.scoringTimer.Start();
 
             
