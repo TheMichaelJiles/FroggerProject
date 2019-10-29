@@ -123,7 +123,7 @@ namespace FroggerStarter.Controller
         {
             this.currentProgressBarCount++;
             this.ProgressBarIncrease?.Invoke(this, new ProgressBarArgs {ProgressValue = this.currentProgressBarCount});
-            if (this.currentProgressBarCount == DefaultValues.ScoringTimerMaximum)
+            if (this.currentProgressBarCount == DefaultValues.ProgressBarMaximum)
             {
                 this.resetProgressBar();
                 this.executeLifeLostOperations();
@@ -137,7 +137,7 @@ namespace FroggerStarter.Controller
             this.resetProgressBar();
             var lifeArgs = new LifeLostEventArgs {Lives = this.playerStats.Lives};
             this.LifeLost?.Invoke(this, lifeArgs);
-            this.roadManager.ResetVehicleSpeeds();
+            this.roadManager.ResetVehicles();
             this.showDeathAnimation();
             this.setPlayerToCenterOfBottomLane();
         }
@@ -189,8 +189,8 @@ namespace FroggerStarter.Controller
         {
             this.player = new Frog();
             this.addGameObjectToCanvas(this.player);
-            this.player.DeathAnimation.ToList().ForEach(this.addGameObjectToCanvas);
-            this.player.DeathAnimation.ToList().ForEach(frame => frame.Sprite.Visibility = Visibility.Collapsed);
+            this.player.DeathAnimationFrames.ToList().ForEach(this.addGameObjectToCanvas);
+            this.player.DeathAnimationFrames.ToList().ForEach(frame => frame.Sprite.Visibility = Visibility.Collapsed);
             this.setPlayerBoundaries();
             this.setPlayerToCenterOfBottomLane();
         }
@@ -226,7 +226,7 @@ namespace FroggerStarter.Controller
             if (this.playerSuccessfullyCrossedRoad())
             {
                 this.detectCollisionBetweenFrogAndHome();
-                this.playerStats.IncreaseScore((DefaultValues.ScoringTimerMaximum - this.currentProgressBarCount) * 10);
+                this.playerStats.IncreaseScore((DefaultValues.ProgressBarMaximum - this.currentProgressBarCount) * 10);
                 var scoreIncreasedArgs = new ScoreIncreasedEventArgs {Score = this.playerStats.Score};
                 this.resetProgressBar();
                 this.ScoreIncreased?.Invoke(this, scoreIncreasedArgs);
@@ -311,7 +311,7 @@ namespace FroggerStarter.Controller
             this.player.Sprite.Visibility = Visibility.Collapsed;
             this.setPlayerToCenterOfBottomLane();
             this.player.Freeze();
-            this.player.DeathAnimation[0].Sprite.Visibility = Visibility.Visible;
+            this.player.DeathAnimationFrames[0].Sprite.Visibility = Visibility.Visible;
             this.deathTimer.Start();
         }
 
@@ -325,15 +325,15 @@ namespace FroggerStarter.Controller
         private void deathTimerOnTick(object sender, object args)
         {
             var visibleFrameIndex = this.getVisibleFrameIndexInPlayerDeathAnimations();
-            this.player.DeathAnimation[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
+            this.player.DeathAnimationFrames[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
 
-            if (!(visibleFrameIndex + 1 >= this.player.DeathAnimation.Count))
+            if (!(visibleFrameIndex + 1 >= this.player.DeathAnimationFrames.Count))
             {
-                this.player.DeathAnimation[visibleFrameIndex + 1].Sprite.Visibility = Visibility.Visible;
+                this.player.DeathAnimationFrames[visibleFrameIndex + 1].Sprite.Visibility = Visibility.Visible;
             }
             else
             {
-                this.player.DeathAnimation[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
+                this.player.DeathAnimationFrames[visibleFrameIndex].Sprite.Visibility = Visibility.Collapsed;
                 this.player.Sprite.Visibility = Visibility.Visible;
                 this.player.Unfreeze();
                 this.deathTimer.Stop();
@@ -343,11 +343,11 @@ namespace FroggerStarter.Controller
 
         private int getVisibleFrameIndexInPlayerDeathAnimations()
         {
-            foreach (var frame in this.player.DeathAnimation)
+            foreach (var frame in this.player.DeathAnimationFrames)
             {
                 if (frame.Sprite.Visibility == Visibility.Visible)
                 {
-                    return this.player.DeathAnimation.IndexOf(frame);
+                    return this.player.DeathAnimationFrames.IndexOf(frame);
                 }
             }
 

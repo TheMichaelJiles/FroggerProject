@@ -120,7 +120,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\FrogDeathAnimation.cs" />
+    <Compile Include="Model\FrogDeathFrame.cs" />
     <Compile Include="Model\FrogHome.cs" />
     <Compile Include="Model\Player.cs" />
     <Compile Include="Model\Vehicles\Car.cs" />

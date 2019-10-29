@@ -30,24 +30,24 @@ namespace FroggerStarter.Model
         public RoadManager()
         {
             this.populateLaneManagersList();
-            this.setupSpeedTimer();
-            this.speedUpVehicles(this, EventArgs.Empty);
+            this.setupVehicleTimer();
+            this.placeNewVehicles(this, EventArgs.Empty);
         }
 
         #endregion
 
         #region Methods
 
-        /// <summary>Resets the vehicle speeds to default values.</summary>
+        /// <summary>Resets the vehicles to default positions.</summary>
         /// Precondition: None
-        /// Postcondition: Vehicles speeds are set to default values
-        public void ResetVehicleSpeeds()
+        /// Postcondition: Vehicles locations are set to default values
+        public void ResetVehicles()
         {
             foreach (var lane in this.laneManagers)
             {
                 lane.Reset();
             }
-            this.speedUpVehicles(this, EventArgs.Empty);
+            this.placeNewVehicles(this, EventArgs.Empty);
         }
 
         private void populateLaneManagersList()
@@ -79,6 +79,10 @@ namespace FroggerStarter.Model
             return vehicles;
         }
 
+        /// <summary>Gets all active vehicles.</summary>
+        /// Precondition: None
+        /// Postcondition: None
+        /// <returns>A list of all active vehicles</returns>
         public List<Vehicle> GetAllActiveVehicles()
         {
             var vehicles = new List<Vehicle>();
@@ -95,25 +99,22 @@ namespace FroggerStarter.Model
             return vehicles;
         }
 
-        private void setupSpeedTimer()
+        private void setupVehicleTimer()
         {
             this.timer = new DispatcherTimer();
-            this.timer.Tick += this.speedUpVehicles;
+            this.timer.Tick += this.placeNewVehicles;
             this.timer.Interval = new TimeSpan(0, 0, 0, 8, 0);
             this.timer.Start();
         }
 
-        private void speedUpVehicles(object sender, object e)
+        private void placeNewVehicles(object sender, object e)
         {
             foreach (var lane in this.laneManagers)
             {
-                foreach (var vehicle in lane)
+                foreach (var vehicle in lane.Where(vehicle => !vehicle.IsActivated))
                 {
-                    if (!vehicle.IsActivated)
-                    {
-                        vehicle.IsActivated = true;
-                        break;
-                    }
+                    vehicle.IsActivated = true;
+                    break;
                 }
             }
         }
@@ -127,6 +128,7 @@ namespace FroggerStarter.Model
             {
                 vehicle.Move();
                 this.detectCollisionOfThisAndVehicle(vehicle);
+
                 if (this.vehicleIsOffRightSideOfCanvas(vehicle))
                 {
                     vehicle.X = 0 - vehicle.Width;
@@ -179,14 +181,16 @@ namespace FroggerStarter.Model
             return vehicle.X >= DefaultValues.LaneWidth;
         }
 
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<Vehicle> GetEnumerator()
         {
-            return laneManagers[0]?.GetEnumerator();
+            return this.laneManagers[0]?.GetEnumerator() ?? throw new InvalidOperationException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return laneManagers[0]?.GetEnumerator();
+            return this.laneManagers[0]?.GetEnumerator() ?? throw new InvalidOperationException();
         }
 
         #endregion

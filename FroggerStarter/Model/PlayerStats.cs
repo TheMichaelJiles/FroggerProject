@@ -1,5 +1,6 @@
 ﻿namespace FroggerStarter.Model
 {
+    /// <summary>Class containing the player stats like Lives and Score</summary>
     public class PlayerStats
     {
         #region Properties

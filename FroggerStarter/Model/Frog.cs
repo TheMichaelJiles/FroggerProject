@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Model
@@ -10,10 +9,6 @@ namespace FroggerStarter.Model
     /// <seealso cref="FroggerStarter.Model.GameObject" />
     public class Frog : Player
     {
-        #region Data members
-
-        #endregion
-
         #region Properties
 
         /// <summary>Gets the width of the game object.</summary>
@@ -31,15 +26,15 @@ namespace FroggerStarter.Model
         /// <summary>
         ///     Initializes a new instance of the <see cref="Frog" /> class.
         /// </summary>
-        public Frog() : base()
+        public Frog()
         {
             Sprite = new FrogSprite();
 
-            this.DeathAnimation = new List<FrogDeathAnimation>() {
-                new FrogDeathAnimation(new FrogDeathOne()),
-                new FrogDeathAnimation(new FrogDeathTwo()),
-                new FrogDeathAnimation(new FrogDeathThree()),
-                new FrogDeathAnimation(new FrogDeathFour())
+            DeathAnimationFrames = new List<FrogDeathFrame> {
+                new FrogDeathFrame(new FrogDeathOne()),
+                new FrogDeathFrame(new FrogDeathTwo()),
+                new FrogDeathFrame(new FrogDeathThree()),
+                new FrogDeathFrame(new FrogDeathFour())
             };
         }
 
@@ -55,9 +50,9 @@ namespace FroggerStarter.Model
         public override void MoveRight()
         {
             base.MoveRight();
-            if (!this.IsFrozen)
+            if (!IsFrozen)
             {
-                this.moveDeathFramesToFrogLocation(); 
+                this.moveDeathFramesToFrogLocation();
             }
         }
 
@@ -69,7 +64,7 @@ namespace FroggerStarter.Model
         public override void MoveLeft()
         {
             base.MoveLeft();
-            if (!this.IsFrozen)
+            if (!IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation();
             }
@@ -83,7 +78,7 @@ namespace FroggerStarter.Model
         public override void MoveUp()
         {
             base.MoveUp();
-            if (!this.IsFrozen)
+            if (!IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation();
             }
@@ -97,7 +92,7 @@ namespace FroggerStarter.Model
         public override void MoveDown()
         {
             base.MoveDown();
-            if(!this.IsFrozen)
+            if (!IsFrozen)
             {
                 this.moveDeathFramesToFrogLocation();
             }
@@ -105,10 +100,10 @@ namespace FroggerStarter.Model
 
         private void moveDeathFramesToFrogLocation()
         {
-            foreach (var frame in this.DeathAnimation)
+            foreach (var frame in DeathAnimationFrames)
             {
-                frame.X = this.X;
-                frame.Y = this.Y;
+                frame.X = X;
+                frame.Y = Y;
             }
         }
 

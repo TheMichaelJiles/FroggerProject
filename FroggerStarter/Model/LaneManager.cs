@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using FroggerStarter.Model.Vehicles;
 
 namespace FroggerStarter.Model
@@ -14,9 +12,9 @@ namespace FroggerStarter.Model
         #region Data members
 
         private IList<Vehicle> vehicles;
-        private Direction direction;
-        private int numberOfVehicles;
-        private int laneYCoordinate;
+        private readonly Direction direction;
+        private readonly int numberOfVehicles;
+        private readonly int laneYCoordinate;
 
         #endregion
 
@@ -31,17 +29,29 @@ namespace FroggerStarter.Model
         public LaneManager(VehicleType vehicleType, Direction direction, int numberOfVehicles, int laneYCoordinate,
             int speed)
         {
-            this.createAndPopulateListOfVehicles(direction, numberOfVehicles, vehicleType);
-            this.stackVehiclesOffScreen(numberOfVehicles, laneYCoordinate);
-            this.SetSpeedOfVehicles(speed);
             this.direction = direction;
             this.numberOfVehicles = numberOfVehicles;
             this.laneYCoordinate = laneYCoordinate;
+            this.createAndPopulateListOfVehicles(vehicleType);
+            this.stackVehiclesOffScreen();
+            this.SetSpeedOfVehicles(speed);
         }
 
         #endregion
 
         #region Methods
+
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<Vehicle> GetEnumerator()
+        {
+            return this.vehicles.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
 
         /// <summary>
         ///     Sets the speed of the vehicles.
@@ -57,29 +67,33 @@ namespace FroggerStarter.Model
             }
         }
 
+        /// <summary>Resets all vehicles to starting positions.</summary>
+        /// Precondition: None
+        /// Postcondition: All vehicles put to starting positions
         public void Reset()
         {
             foreach (var vehicle in this.vehicles)
             {
                 vehicle.IsActivated = false;
             }
-            this.stackVehiclesOffScreen(this.numberOfVehicles, this.laneYCoordinate);
+
+            this.stackVehiclesOffScreen();
         }
 
-        private void createAndPopulateListOfVehicles(Direction direction, int numberOfVehicles, VehicleType vehicleType)
+        private void createAndPopulateListOfVehicles(VehicleType vehicleType)
         {
             this.vehicles = new List<Vehicle>();
-            for (var i = 0; i < numberOfVehicles; i++)
+            for (var i = 0; i < this.numberOfVehicles; i++)
             {
-                this.vehicles.Add(VehicleFactory.createNewVehicle(vehicleType, direction));
+                this.vehicles.Add(VehicleFactory.createNewVehicle(vehicleType, this.direction));
             }
         }
 
-        private void stackVehiclesOffScreen(int numberOfVehicles, int laneYCoordinate)
+        private void stackVehiclesOffScreen()
         {
             foreach (var vehicle in this.vehicles)
             {
-                vehicle.Y = laneYCoordinate + (DefaultValues.LaneHeight - vehicle.Height) / 2;
+                vehicle.Y = this.laneYCoordinate + (DefaultValues.LaneHeight - vehicle.Height) / 2;
                 if (this.direction == Direction.Left)
                 {
                     vehicle.X = DefaultValues.LaneWidth;
@@ -90,33 +104,6 @@ namespace FroggerStarter.Model
                 }
             }
         }
-
-        private void assignVehicleCoordinates(int numberOfVehicles, int laneYCoordinate)
-        {
-            var totalLengthOfVehicles = this.vehicles.First().Width * numberOfVehicles;
-            var spaceBetweenVehicles = (DefaultValues.LaneWidth - totalLengthOfVehicles) / numberOfVehicles;
-            double endOfPreviousVehicle = 0;
-            foreach (var vehicle in this.vehicles)
-            {
-                vehicle.Y = laneYCoordinate + (DefaultValues.LaneHeight - vehicle.Height) / 2;
-                vehicle.X = endOfPreviousVehicle + spaceBetweenVehicles;
-                endOfPreviousVehicle = vehicle.X + vehicle.Width;
-            }
-        }
-
-        /// <summary>Returns an enumerator that iterates through the collection.</summary>
-        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<Vehicle> GetEnumerator()
-        {
-            return this.vehicles.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return this.GetEnumerator();
-        }
-
-
 
         #endregion
     }

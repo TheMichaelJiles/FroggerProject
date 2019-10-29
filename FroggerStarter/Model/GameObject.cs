@@ -1,5 +1,4 @@
-﻿ using System;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using FroggerStarter.View.Sprites;
 
 namespace FroggerStarter.Model
@@ -49,8 +48,6 @@ namespace FroggerStarter.Model
             }
         }
 
-        
-
         /// <summary>
         ///     Gets the width of the game object.
         /// </summary>
@@ -79,14 +76,10 @@ namespace FroggerStarter.Model
 
         #region Methods
 
-        
-
         private void render()
         {
             this.Sprite.RenderAt(this.X, this.Y);
         }
-
-        
 
         #endregion
     }
