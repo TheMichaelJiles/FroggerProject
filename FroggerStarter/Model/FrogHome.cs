@@ -21,7 +21,7 @@ namespace FroggerStarter.Model
 
         /// <summary>Initializes a new instance of the <see cref="FrogHome" /> class.</summary>
         /// Precondition: none
-        /// Postcondition: this.Sprite = new FrogHomeSprite, && the sprite is collapsed
+        /// Postcondition: this.Sprite = new FrogHomeSprite, and the sprite is collapsed
         public FrogHome()
         {
             Sprite = new FrogHomeSprite {

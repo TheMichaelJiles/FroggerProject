@@ -43,7 +43,7 @@ namespace FroggerStarter.Model
 
         /// <summary>Freezes the player to prevent movement and sets IsFrozen to true</summary>
         /// Precondition: None
-        /// Postcondition Sets speed of player to zero && IsFrozen == true
+        /// Postcondition Sets speed of player to zero and IsFrozen == true
         public void Freeze()
         {
             this.IsFrozen = true;
@@ -51,7 +51,7 @@ namespace FroggerStarter.Model
 
         /// <summary>Sets player speed back to default and sets IsFrozen to false</summary>
         /// Precondition: None
-        /// Postcondition Sets speed of player to default && IsFrozen == false
+        /// Postcondition Sets speed of player to default and IsFrozen == false
         public void Unfreeze()
         {
             this.IsFrozen = false;
